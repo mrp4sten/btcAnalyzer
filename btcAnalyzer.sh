@@ -130,12 +130,13 @@ function unconfirmedTransactions() {
     # {64} is used to specify that the pattern should have 64 characters
     hash_list=$(cat unconfirmed_transactions.tmp | grep "Unconfirmed BTC Transactions" -A 36 | grep -o -E $REG_EX_HASH)
 
-    echo "Hash_BTC" >unconfirmed_transactions.table.tmp
+    echo "Hash_BTC_USD" >unconfirmed_transactions.table.tmp
 
     for hash_item in $hash_list; do
         # date_time=$(cat unconfirmed_transactions.tmp | grep "${hash_item}" -B 1 | grep -o -P '\d{1,2}/\d{1,2}/\d{4}, \d{2}:\d{2}:\d{2}')
         btc_value=$(cat unconfirmed_transactions.tmp | grep "${hash_item}" | grep -o -P $REG_EX_DECIMAL)
-        echo "${hash_item}_${btc_value}" >>unconfirmed_transactions.table.tmp
+        usd_value=$(echo "29401.82 * ${btc_value}" | bc)
+        echo "${hash_item}_${btc_value}_${usd_value}" >>unconfirmed_transactions.table.tmp
     done
 
     printTable "_" "$(cat unconfirmed_transactions.table.tmp)"
