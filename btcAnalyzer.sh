@@ -3,8 +3,6 @@
 
 # Global Variables
 UNCONFIRMED_TRANSACTIONS="https://www.blockchain.com/explorer/mempool/btc"
-INSPECT_TRANSACTION_URL="https://www.blockchain.com/explorer/transactions/btc/"
-INSPECT_ADDRESS_URL="https://www.blockchain.com/explorer/addresses/btc/"
 REG_EX_HASH="[a-fA-F0-9]{64}"
 REG_EX_DECIMAL="\d+\.\d+"
 
@@ -139,7 +137,10 @@ function unconfirmedTransactions() {
         echo "${hash_item}_${btc_value}_${usd_value}" >>unconfirmed_transactions.table.tmp
     done
 
+    echo -ne "${yellowColour}"
     printTable "_" "$(cat unconfirmed_transactions.table.tmp)"
+    echo -ne "${endColour}"
+
     rm *.tmp 2>/dev/null
 
     tput cnorm
